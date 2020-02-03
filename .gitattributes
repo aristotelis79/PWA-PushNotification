@@ -65,6 +65,4 @@
 
 *.cs linguist-language=C#
 *.css linguist-language=C#
-*.CSS linguist-language=C#
-CSS linguist-language=C#
-
+*.scss linguist-language=C#
