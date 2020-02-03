@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Progressive Web App",
+  "FriendlyName": "Progressive Web App",
+  "SystemName": "Progressive.Web.App",
+  "Version": "1.1",
+  "SupportedVersions": [ "4.00" ],
+  "Author": "Aristotelis Papantonis",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Progressive.Web.App.dll",
+  "Description": "This plugin create Progressive Web App"
+}

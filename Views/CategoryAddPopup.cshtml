@@ -1,0 +1,160 @@
+﻿@using Nop.Core.Domain.Common
+@using Nop.Plugin.Progressive.Web.App.Models
+@model AddOfferTypeModel
+@inject AdminAreaSettings adminAreaSettings
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminPopupLayout.cshtml";
+
+    var popGridPageSize = adminAreaSettings.PopupGridPageSize;
+
+    //page title
+    ViewBag.Title = T("Admin.Plugins.ProgressiveWebApp.Category.AddToOffer").Text;
+}
+
+@if (Model.SelectOfferType == true)
+{
+    <script type="text/javascript">
+        try {
+            window.opener.document.getElementById('offer-id').value = "@Model.SelectedOfferId";
+            window.opener.document.getElementById('offer-type').value = "@Model.OfferType";
+            window.opener.document.getElementById('offer-name').value = "@Model.OfferName";
+            window.opener.document.getElementById('btnAddofferType').click();
+        }
+        catch (e){}
+        window.close();
+    </script>
+}
+
+<form asp-controller="AdminWebPush" asp-action="CategoryAddPopupList">
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Admin.Plugins.ProgressiveWebApp.Category.AddToOffer")
+        </h1>
+        <div class="pull-right">
+            &nbsp;
+        </div>
+    </div>
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-default panel-search panel-popup">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-sm-5">
+                                        <nop-label asp-for="SearchCategoryName" />
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <nop-editor asp-for="SearchCategoryName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="button" id="search-category" class="btn btn-primary btn-search">
+                                    <i class="fa fa-search"></i>
+                                    @T("Admin.Common.Search")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="category-grid"></div>
+
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $("#category-grid").kendoGrid({
+                                dataSource: {
+                                    type: "json",
+                                    transport: {
+                                        read: {
+                                            url: "@Html.Raw(Url.Action("CategoryAddPopupList", "AdminWebPush"))",
+                                            type: "POST",
+                                            dataType: "json",
+                                            data: additionalData
+                                        }
+                                    },
+                                    schema: {
+                                        data: "Data",
+                                        total: "Total",
+                                        errors: "Errors"
+                                    },
+                                    error: function(e) {
+                                        display_kendoui_grid_error(e);
+                                        // Cancel the changes
+                                        this.cancelChanges();
+                                    },
+                                    pageSize: @(popGridPageSize),
+                                    serverPaging: true,
+                                    serverFiltering: true,
+                                    serverSorting: true
+                                },
+                                pageable: {
+                                    refresh: true,
+                                    @await Html.PartialAsync("_GridPagerMessages")
+                                },
+                                columns: [
+                                    {
+                                        field: "Id",
+                                        title: "@T("Admin.Common.Select")",
+                                        width: 100,
+                                        template: '<button type="button" onclick="addCategoryToOffer(#=Id#)" class="btn btn-default">@T("Admin.Common.Select")</button>'
+                                    },
+                                    {
+                                        field: "Name",
+                                        title: "@T("Admin.Plugins.ProgressiveWebApp.Category.Fields.Name")"
+                                    }, {
+                                        field: "Published",
+                                        title: "@T("Admin.Plugins.ProgressiveWebApp.Category.Fields.Published")",
+                                        width: 100,
+                                        headerAttributes: { style: "text-align:center" },
+                                        attributes: { style: "text-align:center" },
+                                        template: '# if(Published) {# <i class="fa fa-check true-icon"></i> #} else {# <i class="fa fa-close false-icon"></i> #} #'
+                                    }]
+                            });
+                        });
+                        </script>
+
+                        <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('#search-category').click(function() {
+                                var grid = $('#category-grid').data('kendoGrid');
+                                grid.dataSource.page(1); //new search. Set page size to 1
+                                //grid.dataSource.read(); we already loaded the grid above using "page" function
+                                //clear selected checkboxes
+                                return false;
+                            });
+
+                            $("#@Html.IdFor(model => model.SearchCategoryName)").keydown(function(event) {
+                                if (event.keyCode == 13) {
+                                    $("#search-category").click();
+                                    return false;
+                                }
+                            });
+                        });
+
+                        function additionalData() {
+                            var data = {
+                                SearchCategoryName: $('#@Html.IdFor(model => model.SearchCategoryName)').val()
+                            };
+                            addAntiForgeryToken(data);
+                            return data;
+                        }
+
+                        function addCategoryToOffer(catergoryId) {
+                            var addCategoryToOfferUrl = '@Html.Raw(Url.Action("CategoryAddPopup", "AdminWebPush", new {selectedOfferId = "categoryidplaceholder"}))';
+                            addCategoryToOfferUrl = addCategoryToOfferUrl.replace("categoryidplaceholder", catergoryId);
+                            setLocation(addCategoryToOfferUrl);
+                        }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

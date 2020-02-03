@@ -1,0 +1,70 @@
+﻿@model Nop.Plugin.Progressive.Web.App.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync("StoreScopeConfiguration")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PublicKey" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for=PublicKey/>
+                        <span asp-validation-for="PublicKey"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PrivateKey" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for=PrivateKey/>
+                        <span asp-validation-for="PrivateKey"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ProgressiveWebAppHeaderTags"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-textarea asp-for=ProgressiveWebAppHeaderTags style ='margin:0px; width: 920px; height: 130px;'/>
+                        <span asp-validation-for="ProgressiveWebAppHeaderTags"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ProgressiveWebAppCode"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-textarea asp-for=ProgressiveWebAppCode style ='margin:0px; width: 920px; height: 200px;'/>
+                        <span asp-validation-for="ProgressiveWebAppCode"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PushNotificationHtml"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-textarea asp-for=PushNotificationHtml style ='margin:0px; width: 920px; height: 50px;'/>
+                        <span asp-validation-for="PushNotificationHtml"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

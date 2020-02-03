@@ -1,0 +1,21 @@
+{
+    "name": "NopCommerce",
+    "short_name": "NopCommerce",
+    "icons": [
+      {
+        "src": "/Plugins/Progressive.Web.App/Content/Icons/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/Plugins/Progressive.Web.App/Content/Icons/android-chrome-256x256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#286893",
+    "background_color": "#286893",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any"
+}

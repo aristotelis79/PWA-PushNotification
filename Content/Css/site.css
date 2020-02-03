@@ -1,0 +1,17 @@
+﻿.offline-mode {
+    text-align: center;
+    color: #fff;
+    background-color: #248ece;
+    font-size: 18px;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.offline-mode-offset {
+    height: 21px;
+}
+
+#notifybtn {
+    cursor: pointer;
+}
